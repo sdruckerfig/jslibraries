@@ -20,13 +20,16 @@ Ext.Loader.setConfig({
 
 
 Ext.application({
+    models: [
+        'Allergy'
+    ],
     views: [
-        'MyWindow'
+        'AdminAllergies'
     ],
     name: 'MyApp',
 
     launch: function() {
-        Ext.create('MyApp.view.MyWindow', {renderTo: Ext.getBody()});
+        Ext.create('MyApp.view.AdminAllergies', {renderTo: Ext.getBody()});
     }
 
 });

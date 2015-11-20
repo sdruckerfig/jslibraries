@@ -1,0 +1,102 @@
+{
+    "type": "Ext.window.Window",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "autoShow": true,
+        "designer|initialView": true,
+        "designer|userAlias": "adminallergies",
+        "designer|userClassName": "AdminAllergies",
+        "height": 250,
+        "layout": "fit",
+        "title": [
+            "Edit {selectedRecord.text}"
+        ],
+        "width": 400
+    },
+    "name": "MyWindow",
+    "configAlternates": {
+        "title": "binding"
+    },
+    "designerId": "94372d71-c121-46d8-848c-b39958149c04",
+    "viewControllerInstanceId": "a862f731-a9be-43d9-9c7a-5def5ead4334",
+    "viewModelInstanceId": "df4915a6-b74f-4f39-9ef0-0666dfdd7ae9",
+    "cn": [
+        {
+            "type": "Ext.grid.Panel",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "header": false,
+                "selection": [
+                    "{selectedRecord}"
+                ],
+                "store": [
+                    "{Allergies}"
+                ],
+                "title": null
+            },
+            "name": "MyGridPanel",
+            "configAlternates": {
+                "store": "binding",
+                "selection": "binding"
+            },
+            "designerId": "aa6f9db7-688c-46b5-9491-3a19da1bf9f4",
+            "cn": [
+                {
+                    "type": "Ext.grid.column.Column",
+                    "reference": {
+                        "name": "columns",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "dataIndex": "text",
+                        "flex": 1,
+                        "text": "Label"
+                    },
+                    "name": "MyColumn",
+                    "designerId": "24c69993-d295-4cf5-9f3e-ed474861462f",
+                    "cn": [
+                        {
+                            "type": "Ext.form.field.Text",
+                            "reference": {
+                                "name": "editor",
+                                "type": "object"
+                            },
+                            "codeClass": null,
+                            "name": "MyTextField",
+                            "designerId": "cccedb19-10e3-4195-934e-36d71e6f4485"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.view.Table",
+                    "reference": {
+                        "name": "viewConfig",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyTable",
+                    "designerId": "d2447721-2156-4962-826f-aba0cd5034cd"
+                },
+                {
+                    "type": "Ext.grid.plugin.RowEditing",
+                    "reference": {
+                        "name": "plugins",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "name": "MyRowEditingPlugin",
+                    "designerId": "39774c6b-8e48-4342-a422-78a3388239b3"
+                }
+            ]
+        }
+    ]
+}

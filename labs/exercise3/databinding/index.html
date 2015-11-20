@@ -12,6 +12,30 @@
 <!-- bootstrap styles -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="http://parsleyjs.org/src/parsley.css" rel="">
+
+<style>
+  body {
+    padding: 10px;
+  }
+  .mce-btn button {
+    line-height: 0px !important;
+    padding-top: 2px !important;
+    padding-right: 4px !important   ;
+  }
+  .mce-ico {
+    font-size: 14px !important;
+  }
+  #formTable {
+    margin-top: 20px;
+    border: 1px solid black;
+    width: 100%;
+  }
+
+  #formTable td {
+    padding: 5px;
+  }
+</style>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <script type="text/javascript">
 function mergeObjects(obj1, obj2) {
@@ -53,12 +77,12 @@ function serializeFormToJSON(formElement) {
 }
 
 function btnSumbitHandler(event) {
-    debugger;
+    
 
     event.preventDefault();
     var formData = serializeFormToJSON($('form'));
     if (tableView.editing) {
-        debugger;
+        
         tableView.editing.set(formData);
         tableView.render();
     } else {
@@ -77,32 +101,10 @@ function btnNewHandler(event) {
 }
 
 function init() {
-    /*var Allergy = Backbone.Model.extend({
- 
-			  // We can pass it default values.
-			  defaults : {
-			    name : null,
-			    sparkles : false,
-			    cream_filled : false
-			  },
-			 
-			  url : function() {
-			    // Important! It's got to know where to send its REST calls. 
-			    // In this case, POST to '/donuts' and PUT to '/donuts/:id'
-			    return this.id ? '/donuts/' + this.id : '/donuts'; 
-			  } 
-			 
-			});
-			var Allergies = Backbone.Collection.extend({
-			  url: 'http://webapps.figleaf.com/rest/prototypes/allergies.json',
-			  parse: function(data) {
-			  	return data.records;
-			  }
-			});
-			var allergies = new Allergies();
-			allergies.fetch();*/
+   
 
     $('#btnSubmit').on('click', btnSumbitHandler);
+    
     formPerson = Backbone.Model.extend({
         defaults: {
             "fullname": '',
@@ -117,6 +119,7 @@ function init() {
     });
 
     people = new peopleCollection();
+    
     people.on('add', function(added) {
         var addedTr = $('<tr id=\'' + added.cid + '\'>');
         //addedTr.on('click', tableRowClick)
@@ -128,8 +131,9 @@ function init() {
         }
         tableView.$el.append(addedTr);
     });
+
     tableRowClick = function(e) {
-        debugger;
+       
         var row = $(e.target).parent();
         tableView.editing = people.get(row.attr('id'));
         var form = $('form');
@@ -149,20 +153,17 @@ function init() {
         }
         var hobbies = row.find('td[name=hobbies]');
         hobbies = hobbies.text().split(' ');
-        debugger;
+      
         for (var i in hobbies) {
             $('#' + hobbies[i]).prop('checked', true);
         }
-
-
-
-
     }
 
     formView = Backbone.View.extend({
         el: $('#myform'),
         model: formPerson,
     });
+    
     tableViewDec = Backbone.View.extend({
         el: $('#formTable'),
         collection: people,
@@ -207,54 +208,77 @@ function init() {
 
 <body onload="init()">
 <form id="myform" data-parsley-validate="">
-<div class="form-group">
-<label for="fullname">Full Name</label>
-<input id="fullname" type="text" class="form-control" name="fullname" required="">
-</div>
-<div class="form-group">
-<label for="email">Email</label>
-<input id="email" type="text" class="form-control" name="email" data-parsley-trigger="change" required="">
-</div>
-<div class="form-group">
-<label for="gender">Gender</label>
-<label class="radio-inline">
-<input type="radio" name="gender" id="genderM" value="M" required=""> Male
-</label>
-<label class="radio-inline">
-<input type="radio" name="gender" id="genderF" value="F"> Female
-</label>
-</div>
-<div class="checkbox">
-<label>
-Skiing
-<input type="checkbox" name="hobbies" id="ski" value="ski" data-parsley-mincheck="2">
-</label>
-</div>
-<div class="checkbox">
-<label>
-Running
-<input type="checkbox" name="hobbies" id="run" value="run" data-parsley-mincheck="2">
-</label>
-</div>
-<div class="form-group">
-<label for="message">Message (20 chars min, 100 max)</label>
-<br />
-<textarea id="message" class="form-control" name="message" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-minlength-message="You must enter a min of 20 chars" data-parsley-validation-threshold="10"></textarea>
-</div>
-<div class="col-sm-offset-10 col-sm-10">
-<button type="submit" id="btnSubmit" value="Submit Form" class="btn btn-default">Submit form</button>
-<button id='btnNew' class="btn btn-default">New Entry</button>
-</div>
-</form>
-<table id='formTable'>
-<th>
-<td>Fullname </td>
-<td>Email </td>
-<td>Gender </td>
-<td>Hobbies </td>
-<td>Message </td>
-</th>
-</table>
-</body>
+    
+    <div class="form-group">
+        <label for="fullname">Full Name</label>
+        <input id="fullname" type="text" class="form-control" name="fullname" required="">
+    </div>
 
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="text" class="form-control" name="email" data-parsley-trigger="change" required="">
+    </div>
+
+    <div class="form-group">
+        <label for="gender">Gender</label>
+        <label class="radio-inline">
+            <input type="radio" name="gender" id="genderM" value="M" required=""> Male
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="gender" id="genderF" value="F"> Female
+        </label>
+    </div>
+
+<div class="checkbox">
+    <label>
+    <input type="checkbox" name="hobbies" id="ski" value="ski" data-parsley-mincheck="2">
+    Skiing
+    </label>
+</div>
+
+<div class="checkbox">
+    <label>
+    <input type="checkbox" name="hobbies" id="run" value="run">
+    Running
+    </label>
+</div>
+
+<div class="checkbox">
+    <label>
+    <input type="checkbox" name="hobbies" id="netflix" value="netflix">
+    Watching Netflix
+    </label>
+</div>
+
+<div class="checkbox">
+    <label>
+    <input type="checkbox" name="hobbies" id="drupal" value="drupal">
+    Building Drupal Modules
+    </label>
+</div>
+
+<div class="form-group">
+    <label for="message">Message (20 chars min, 100 max)</label>
+    <br />
+    <textarea id="message" class="form-control" name="message" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-minlength-message="You must enter a min of 20 chars" data-parsley-validation-threshold="10"></textarea>
+</div>
+
+<div>
+<button type="submit" id="btnSubmit" value="Submit Form" class="btn btn-default">Submit form</button>
+<button type="button" id='btnNew' class="btn btn-default">New Entry</button>
+</div>
+
+</form>
+
+<table id='formTable'>
+    <tr>
+    <th>Fullname </th>
+    <th>Email </th>
+    <th>Gender </th>
+    <th>Hobbies </th>
+    <th>Message </th>
+    </tr>
+</table>
+
+</body>
 </html>

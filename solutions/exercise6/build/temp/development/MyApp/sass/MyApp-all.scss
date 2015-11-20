@@ -908,9 +908,10 @@ $include-extthemeneptune-picker-month: true;
 $include-extthemeneptune-resizer-splitter: true;
 $include-extthemeneptune-toolbar-paging: true;
 $include-extthemeneptune-toolbar-toolbar: true;
-$include-myapp-view-mywindow: true;
-$include-myapp-view-mywindowviewcontroller: true;
-$include-myapp-view-mywindowviewmodel: true;
+$include-myapp-model-allergy: true;
+$include-myapp-view-adminallergies: true;
+$include-myapp-view-adminallergiesviewcontroller: true;
+$include-myapp-view-adminallergiesviewmodel: true;
 /* including package ext-theme-base */
 @import '../../../../../ext/packages/ext-theme-base/sass/etc/all';
 /* including package ext-theme-neutral */

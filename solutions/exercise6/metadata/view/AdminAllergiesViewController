@@ -6,8 +6,8 @@
     },
     "codeClass": null,
     "userConfig": {
-        "designer|userAlias": "mywindow",
-        "designer|userClassName": "MyWindowViewController"
+        "designer|userAlias": "adminallergies",
+        "designer|userClassName": "AdminAllergiesViewController"
     },
     "designerId": "a862f731-a9be-43d9-9c7a-5def5ead4334"
 }

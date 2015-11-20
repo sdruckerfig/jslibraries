@@ -6,9 +6,12 @@
     },
     "codeClass": null,
     "userConfig": {
+        "models": [
+            "Allergy"
+        ],
         "name": "MyApp",
         "views": [
-            "MyWindow"
+            "AdminAllergies"
         ]
     },
     "name": "Application",
