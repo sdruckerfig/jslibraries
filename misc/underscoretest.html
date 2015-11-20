@@ -1,0 +1,26 @@
+<html>
+<head>
+  <title>Underscore test</title>
+ <script type="text/javascript" 
+   src="http://underscorejs.org/underscore-min.js">  </script>  
+<script>  	
+ var people = [  	  
+  {name: 'Steve', age: 46},   	  
+  {name: 'Dave', age: 47},   	  
+  {name: 'Warren', age: 42}  	
+ ];  	
+ alert(_.pluck(people, 'name'));  	
+ alert(''.concat("The oldest person is ",  		
+ 	              _.max(people, function(obj) { return obj.age })
+                  .name  		
+      )  	
+ );  
+</script>
+
+
+ </head>
+
+<body>
+
+</body>
+</html>

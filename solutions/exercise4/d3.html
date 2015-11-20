@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+#chart div {
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white;
+}
+h1 {
+  font-size: 1.2em;
+  font-family: 'Comic Sans MS';
+}
+</style>
+<h1>Best Sci-Fi/Horror on Television</h1>
+<div id="chart"></div>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script>
+
+   d3.json("data.json", function(error,data) {
+    
+    var x = d3.scale.linear()
+      .domain([0, d3.max(data, function(d) {return d.value })])
+      .range([0, 420]);
+
+    d3.select("#chart")
+      .selectAll("div")
+        .data(data)
+      .enter().append("div")
+        .style("width", function(d) { return x(d.value) + "px"; })
+        .text(function(d) { return d.label + ' (' + d.value + ')'; });
+  })
+
+  d3.csv("data.txt")
+    .row(function(d) { return {key: d.Label, value: d.Value}; })
+    .get(function(error, rows) { debugger; console.log(rows); });
+
+</script>

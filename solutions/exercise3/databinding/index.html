@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Exercise 1</title>
+<!-- parsely -->
+<script type="text/javascript" src="bower_components/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="http://parsleyjs.org/dist/parsley.min.js"></script>
+<!-- backbone -->
+<script type="text/javascript" src="bower_components/underscore/underscore-min.js"></script>
+<script type="text/javascript" src="bower_components/backbone/backbone.js"></script>
+<script type="text/javascript" src="bower_components/epoxy/epoxy.js"></script>
+<script src="bower_components/backgrid/lib/backgrid.js"></script>
+<!-- bootstrap styles -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="http://parsleyjs.org/src/parsley.css" rel="">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<script type="text/javascript">
+function mergeObjects(obj1, obj2) {
+    var obj3 = {};
+    for (var attrname in obj1) {
+        obj3[attrname] = obj1[attrname];
+    }
+    for (var attrname in obj2) {
+        obj3[attrname] = obj2[attrname];
+    }
+    return obj3;
+}
+
+
+function clearForm() {
+    var form = $('form');
+    form.find('input[type=text], textarea').val("");
+    form.find('input').prop('checked', false);
+}
+
+function serializeFormToJSON(formElement) {
+    formElement = $(formElement);
+    var formData = {};
+    //formData['gender'] = "";
+    $.each(formElement.serializeArray(), function(_, kv) {
+        formData[kv.name] = kv.value;
+    });
+
+    formData['hobbies'] = "";
+    var hobbies = _.filter(formElement.serializeArray(), function(item) {
+        return item.name === 'hobbies'
+    });
+    for (var i in hobbies) {
+        formData['hobbies'] += hobbies[i].value + ' ';
+    }
+    formData['hobbies'].trim();
+
+    return formData;
+}
+
+function btnSumbitHandler(event) {
+
+    event.preventDefault();
+    var formData = serializeFormToJSON($('form'));
+    if (tableView.editing) {
+        tableView.editing.set(formData);
+        tableView.render();
+    } else {
+        var newPerson = new formPerson(formData);
+
+        people.add(newPerson);
+    }
+
+    clearForm();
+};
+
+function btnNewHandler(event) {
+    event.preventDefault();
+    tableView.editing = undefined;
+    clearForm();
+}
+
+function init() {
+   
+    $('#btnSubmit').on('click', btnSumbitHandler);
+    formPerson = Backbone.Model.extend({
+        defaults: {
+            "fullname": '',
+            "email": '',
+            "gender": '',
+            "hobbies": '',
+            "message": ''
+        }
+    });
+    var peopleCollection = Backbone.Collection.extend({
+        model: formPerson
+    });
+
+    people = new peopleCollection();
+    people.on('add', function(added) {
+        var addedTr = $('<tr id=\'' + added.cid + '\'>');
+        //addedTr.on('click', tableRowClick)
+        added = added.attributes;
+        for (var key in added) {
+            if (added.hasOwnProperty(key)) {
+                addedTr.append('<td name=\'' + key + "\'>" + added[key] + '</td>');
+            }
+        }
+        tableView.$el.append(addedTr);
+    });
+
+    tableRowClick = function(e) {
+       
+        var row = $(e.target).parent();
+        tableView.editing = people.get(row.attr('id'));
+        var form = $('form');
+        var rowData = row.find('td');
+
+        for (var i = 0; i < rowData.length; i++) {
+            var curr = $(rowData[i]);
+            $('#' + curr.attr('name')).val(curr.text());
+
+        }
+        //Special cases for gender and hobbies
+        var gender = row.find('td[name=gender]');
+        if (gender === 'F') {
+            $('genderF').prop("checked", true);
+        } else if (gender === 'M') {
+            $('genderM').prop("checked", true);
+        }
+        var hobbies = row.find('td[name=hobbies]');
+        hobbies = hobbies.text().split(' ');
+      
+        for (var i in hobbies) {
+            $('#' + hobbies[i]).prop('checked', true);
+        }
+    }
+
+    formView = Backbone.View.extend({
+        el: $('#myform'),
+        model: formPerson,
+    });
+    tableViewDec = Backbone.View.extend({
+        el: $('#formTable'),
+        collection: people,
+        editing: undefined,
+        events: {
+            "click": tableRowClick,
+
+        },
+        render: function() {
+            this.$el.empty();
+            this.$el.append('<th>' +
+                '<td>Fullname </td>' +
+                '<td>Email </td>' +
+                '<td>Gender </td>' +
+                '<td>Hobbies </td>' +
+                '<td>Message </td>' +
+                '</th>')
+            var me = this;
+            this.collection.each(function(person) {
+              
+                var tr = $('<tr id=\'' + person.cid + '\'>');
+                person = person.attributes;
+                for (var key in person) {
+                    if (person.hasOwnProperty(key)) {
+                        tr.append('<td name=\'' + key + "\'>" + person[key] + '</td>');
+                    }
+                }
+                this.$el.append(tr);
+            }, this);
+        }
+    });
+
+    tableView = new tableViewDec();
+    //tableView.listenTo(people, 'add', tableView.render);
+    tableView.listenTo(people, 'change', tableView.render);
+
+
+
+}
+</script>
+
+<style>
+  body {
+    padding: 10px;
+  }
+  .mce-btn button {
+    line-height: 0px !important;
+    padding-top: 2px !important;
+    padding-right: 4px !important   ;
+  }
+  .mce-ico {
+    font-size: 14px !important;
+  }
+
+  #formTable {
+    width: 100%;
+    border: 1px solid black;
+    margin-top: 20px;
+  }
+  #formTable td {
+    padding: 5px;
+  }
+</style>
+</head>
+
+<body onload="init()">
+<form id="myform" data-parsley-validate="">
+    <div class="form-group">
+        <label for="fullname">Full Name</label>
+        <input id="fullname" type="text" class="form-control" name="fullname" required="">
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="text" class="form-control" name="email" data-parsley-trigger="change" required="">
+    </div>
+    <div class="form-group">
+    <label for="gender">Gender</label>
+    <label class="radio-inline">
+    <input type="radio" name="gender" id="genderM" value="M" required=""> Male
+    </label>
+    <label class="radio-inline">
+    <input type="radio" name="gender" id="genderF" value="F"> Female
+    </label>
+    </div>
+<div class="checkbox">
+<label>
+<input type="checkbox" name="hobbies" id="ski" value="ski" data-parsley-mincheck="2">
+Skiing
+</label>
+</div>
+<div class="checkbox">
+<label>
+    <input type="checkbox" name="hobbies" id="run" value="run" data-parsley-mincheck="2">
+
+Running
+</label>
+</div>
+<div class="form-group">
+<label for="message">Message (20 chars min, 100 max)</label>
+<br />
+<textarea id="message" class="form-control" name="message" data-parsley-trigger="keyup" data-parsley-minlength="20" data-parsley-maxlength="100" data-parsley-minlength-message="You must enter a min of 20 chars" data-parsley-validation-threshold="10"></textarea>
+</div>
+
+<div class="col-sm-offset-10 col-sm-10">
+<button type="submit" id="btnSubmit" value="Submit Form" class="btn btn-default">Submit form</button>
+<button id='btnNew' class="btn btn-default">New Entry</button>
+</div>
+
+</form>
+
+<table id='formTable'>
+<th>
+<td>Fullname </td>
+<td>Email </td>
+<td>Gender </td>
+<td>Hobbies </td>
+<td>Message </td>
+</th>
+</table>
+</body>
+
+</html>

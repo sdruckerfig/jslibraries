@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<title>Exercise 1</title>
+	<script type="text/javascript"
+	        src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript"
+	        src="http://parsleyjs.org/dist/parsley.min.js"></script>
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+	<link rel="stylesheet" 
+	      type="text/css" 
+	      href="http://parsleyjs.org/src/parsley.css" rel="">
+
+	<script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
+
+	<script type="text/javascript">
+		
+	</script>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+	<style>
+	  body {
+	  	padding: 10px;
+	  }
+	  .mce-btn button {
+	  	line-height: 0px !important;
+	  	padding-top: 2px !important;
+	  	padding-right: 4px !important	;
+	  }
+	  .mce-ico {
+	  	font-size: 14px !important;
+	  }
+	</style>
+</head>
+<body>
+
+<form id="myform" method="post" >
+  
+   <div class="form-group">
+	  <label for="fullname">Full Name*</label>
+	  <input type="text" 
+	        class="form-control" 
+	        name="fullname" 
+	        >
+  </div>
+
+   <div class="form-group">
+	  <label for="email">Email*</label>
+	  <input type="text" 
+	         class="form-control" 
+	         name="email" 
+	  >
+  </div>
+ 
+  <div class="form-group">
+	  <label class="control-label">Gender*</label>
+	  <div>
+	  <label class="radio-inline">
+	     <input type="radio" 
+	            name="gender" 
+	            id="genderM" 
+	            value="M" 
+	            > Male
+	  </label>
+	  <label class="radio-inline">
+	  	 <input type="radio" name="gender" id="genderF" value="F"> Female
+	  </label>
+	 
+	</div>
+  </div>
+  
+   <div class="form-group" style="margin-top: 8px">
+   	<label for="hobbies" style="margin-bottom: 0px;">Hobbies (pick at least 2)</label>
+ 	 <div class="checkbox">
+ 	 	<label> 		
+		    <input 
+		      type="checkbox" 
+		      name="hobbies" 
+		      id="hobby1" 
+		      value="ski" 
+		     >
+		      Skiing
+	    </label>
+    </div>
+
+    <div class="checkbox">
+ 	 	<label>		
+		    <input 
+		      type="checkbox" 
+		      name="hobbies" 
+		      id="hobby2" 
+		      value="run">
+		      Running
+	    </label>
+    </div>
+
+      <div class="checkbox">
+ 	 	<label>		
+		    <input 
+		      type="checkbox" 
+		      name="hobbies" 
+		      id="hobby3" 
+		      value="gaming">
+		      Gaming
+	    </label>
+    </div>
+
+   
+  </div>
+
+ <div class="form-group">
+	  <label for="message">Message (20 chars min, 100 max)</label><br />
+	  <textarea id="message" 
+	    class="form-control" 
+	    name="message" 
+	   
+	   ></textarea>
+</div>
+
+
+  <input type="submit" id="btnSubmit" value="Submit Form" class="btn btn-default pull-right" />
+
+</form>
+
+
+
+
+</body>
+</html>

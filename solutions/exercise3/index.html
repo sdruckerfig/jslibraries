@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<title>Exercise 3</title>
+
+	<!-- bootstrap css -->	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+	<!-- parsley -->
+	<script type="text/javascript"
+	        src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript"
+	        src="http://parsleyjs.org/dist/parsley.min.js"></script>
+	<link rel="stylesheet" 
+	      type="text/css" 
+	      href="http://parsleyjs.org/src/parsley.css" rel="">
+	
+	<!-- tinyMCE -->
+	<script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
+
+	<script type="text/javascript">
+		tinymce.init({
+			selector:'textarea',
+			menubar: false,
+			statusbar: false,
+			resize: false,
+			toolbar: [
+				"undo redo | bold italic underline | cut copy paste |  alignleft aligncenter alignright | bullist numlist outdent indent | link | removeformat | spellchecker | searchreplace | fullscreen"
+			],
+			plugins: "autolink link lists fullscreen paste searchreplace",
+			setup: function(editor) {
+				editor.on('change', function(e) {
+					tinymce.triggerSave();
+					
+					// revalidate with parsely
+					$("#" + e.target.id).parsley().validate();
+				});
+			}
+		});
+	</script>
+
+	<!-- backbone -->
+	<script type="text/javascript"
+			src="http://underscorejs.org/underscore-min.js"></script>
+	<script type="text/javascript"
+			src="http://backbonejs.org/backbone-min.js"></script>
+
+	<script type="text/javascript">
+	    var baseUrl = 'http://webapps.figleaf.com/rest/prototypes/allergies';
+
+		function init() {
+			var Allergy = Backbone.Model.extend({
+ 
+			  // We can pass it default values.
+			  defaults : {
+			    id: 0,
+			    text : '',
+			    updateuser: '',
+			    updatedate: new Date()
+			  },
+			 
+			  url : function() {
+			    // Important! It's got to know where to send its REST calls. 
+			    // In this case, POST to '/allergies.json' and PUT to 'allerges/:id.json'
+			   			   
+			    if (this.id) {
+			    	baseUrl += '/' + this.id;
+			    } 
+			    return baseUrl + '.json' 
+			  } 
+			 
+			});
+			
+			var Allergies = Backbone.Collection.extend({
+			  model: Allergy,
+			  parse: function(data) {
+			  	return data.records;
+			  },
+			  url: baseUrl
+			});
+			
+			var allergies = new Allergies();
+			
+			allergies.fetch({
+				success: function(collection, response, options) {
+					var m, opt;
+					var sBox = document.getElementById('allergies');
+					for (var i=0; i < collection.length; i++) {
+						m = collection.at(i);
+						opt = document.createElement("option");
+						opt.text = m.get('text');
+						opt.value = m.get('value');
+						sBox.add(opt);
+					}
+				},
+				error: function(collection, response, options) {
+					alert('Doh!');
+				}
+			});
+		}
+	</script>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+	<style>
+	  body {
+	  	padding: 10px;
+	  }
+	  .mce-btn button {
+	  	line-height: 0px !important;
+	  	padding-top: 2px !important;
+	  	padding-right: 4px !important	;
+	  }
+	  .mce-ico {
+	  	font-size: 14px !important;
+	  }
+	</style>
+</head>
+<body onLoad="init()">
+
+<form id="myform" data-parsley-validate="" >
+  
+   <div class="form-group">
+	  <label for="fullname">Full Name*</label>
+	  <input type="text" 
+	        class="form-control" 
+	        name="fullname" 
+	        required=""
+	        data-parsley-trigger="keyup">
+  </div>
+
+   <div class="form-group">
+	  <label for="email">Email*</label>
+	  <input type="text" 
+	         class="form-control" 
+	         name="email" 
+	         data-parsley-type="email"
+	         data-parsley-trigger="change" 
+	         required="">
+  </div>
+ 
+  <div class="form-group">
+	  <label class="control-label">Gender*</label>
+	  <div>
+	  <label class="radio-inline">
+	     <input type="radio" 
+	            name="gender" 
+	            id="genderM" 
+	            value="M" 
+	            required="" 
+	            data-parsley-errors-container="#gendervmsg"> Male
+	  </label>
+	  <label class="radio-inline">
+	  	 <input type="radio" name="gender" id="genderF" value="F"> Female
+	  </label>
+	  <div id="gendervmsg" />
+	</div>
+  </div>
+  
+   <div class="form-group" style="margin-top: 8px">
+   	<label for="hobbies" style="margin-bottom: 0px;">Hobbies (pick at least 2)</label>
+ 	 <div class="checkbox">
+ 	 	<label> 		
+		    <input 
+		      type="checkbox" 
+		      name="hobbies" 
+		      id="hobby1" 
+		      value="ski" 
+		      data-parsley-mincheck="2"
+		      data-parsley-errors-container="#hobbiesvmsg">
+		      Skiing
+	    </label>
+    </div>
+
+    <div class="checkbox">
+ 	 	<label>		
+		    <input 
+		      type="checkbox" 
+		      name="hobbies" 
+		      id="hobby2" 
+		      value="run">
+		      Running
+	    </label>
+    </div>
+
+      <div class="checkbox">
+ 	 	<label>		
+		    <input 
+		      type="checkbox" 
+		      name="hobbies" 
+		      id="hobby3" 
+		      value="gaming">
+		      Gaming
+	    </label>
+    </div>
+
+    <div id="hobbiesvmsg" />
+  </div>
+
+  <div class="form-group">
+	  <label for="allergies">Allergies</label>
+	  <select class="form-control" id="allergies" size="5" multiple>
+	  </select>
+  </div>
+
+ <div class="form-group">
+	  <label for="message">Message (20 chars min, 100 max)</label><br />
+	  <textarea id="message" 
+	    class="form-control" 
+	    name="message" 
+	    required=""
+	    data-parsley-trigger="keyup" 
+	    data-parsley-minlength="20" 
+	    data-parsley-maxlength="100" 
+	    data-parsley-minlength-message="You must enter a min of 20 chars" 
+	    data-parsley-validation-threshold="10"></textarea>
+</div>
+
+
+  <input type="submit" id="btnSubmit" value="Submit Form" class="btn btn-default pull-right" />
+
+</form>
+
+
+
+
+</body>
+</html>
